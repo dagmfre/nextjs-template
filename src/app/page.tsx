@@ -6,11 +6,13 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/components/Link/Link';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher/LocaleSwitcher';
 import { Page } from '@/components/Page';
+import { useStartParam } from '@/utils/startParam';
 
 import tonSvg from './_assets/ton.svg';
 
 export default function Home() {
   const t = useTranslations('i18n');
+  const startParam = useStartParam();
 
   return (
     <Page back={false}>
@@ -57,6 +59,14 @@ export default function Home() {
         <Section header={t('header')} footer={t('footer')}>
           <LocaleSwitcher />
         </Section>
+        {startParam ? (
+          <Section
+            header="Launch Context"
+            footer="Start parameter was passed via Telegram link"
+          >
+            <Cell subtitle="tgWebAppStartParam value">{startParam}</Cell>
+          </Section>
+        ) : null}
       </List>
     </Page>
   );

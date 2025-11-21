@@ -3,23 +3,36 @@
 
 import { retrieveLaunchParams } from '@telegram-apps/sdk-react';
 import { init } from './core/init';
-import { mockEnv } from './mockEnv';
+import { getInitialHash } from '@/utils/launchParamsCache';
+import { validateInitData } from '@/utils/initDataApi';
 
-mockEnv().then(() => {
-  try {
-    const launchParams = retrieveLaunchParams();
-    const { tgWebAppPlatform: platform } = launchParams;
-    const debug =
-      (launchParams.tgWebAppStartParam || '').includes('debug') ||
-      process.env.NODE_ENV === 'development';
+// Persist Telegram hash as soon as possible to avoid losing launch params.
+getInitialHash();
 
-    // Configure all application dependencies.
-    init({
-      debug,
-      eruda: debug && ['ios', 'android'].includes(platform),
-      mockForMacOS: platform === 'macos',
-    });
-  } catch (e) {
-    console.log(e);
-  }
-});
+try {
+  const launchParams = retrieveLaunchParams();
+  const { tgWebAppPlatform: platform } = launchParams;
+  const debug =
+    (launchParams.tgWebAppStartParam || '').includes('debug') ||
+    process.env.NODE_ENV === 'development';
+
+  // Configure all application dependencies.
+  init({
+    debug,
+    eruda: debug && ['ios', 'android'].includes(platform),
+    mockForMacOS: platform === 'macos',
+  });
+
+  validateInitData().then(({ valid, user, error }) => {
+    if (valid) {
+      console.info('Init data validated', user);
+      return;
+    }
+
+    if (error) {
+      console.warn('Init data validation failed:', error);
+    }
+  });
+} catch (e) {
+  console.log(e);
+}
