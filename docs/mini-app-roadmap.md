@@ -932,3 +932,10 @@ Okay but before executing that plan i wanna makesure on 2 things:
     - Compare them against the must-done points list
     - Identify any missing implementations or incomplete steps
 3. And finally double check the plan you provided me earlier for launching the mini app quickly and make sure it covers all the must-done points and missing implementations you identified in step 2.
+==========================================
+Now I can manage to launch our 'nextjs-template' based telegram mini app in telegram. I wanna let you know that this 'nextjs-template' based telegram mini app launch plan is built just to allow me practice my skills in telegram mini app development and launching. But next i am tasked to a serious project where i have to launch a real telegram mini app for a real business with real users. Our current codebase main can be divided into 2 categories:
+1. Telegram mini app specific parts:
+This includes all the code that directly interacts with the Telegram Mini App SDK, handles init data validation, launch parameters, theming, buttons, storage, and other Telegram-specific features. This part is crucial for ensuring that our mini app functions correctly within the Telegram environment and adheres to the platform's requirements. All the files and codes needed to integrate the app with the telegram mini app environment, sdk and launch it properly in telegram are included in this category.
+2. Specific in app next js template ui and functionalities parts: 
+This includes all the code that is specific to the actual user interface and functionalities of our mini app, built using the Next.js framework. This part encompasses the design, layout, components, pages, and business logic that define how users interact with the mini app like TON integration etc... and what features it offers. This category is independent of the Telegram Mini App SDK and focuses on delivering a seamless user experience within the app itself. This can include various UI components, TON integration, navigation logic, state management, pages, assets, css stylings etc.
+
