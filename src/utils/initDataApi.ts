@@ -1,4 +1,4 @@
-import { retrieveLaunchParams } from '@telegram-apps/sdk-react';
+import { getInitialHash } from './launchParamsCache';
 
 export type InitDataValidationResult<TUser = unknown> = {
   valid: boolean;
@@ -8,6 +8,7 @@ export type InitDataValidationResult<TUser = unknown> = {
 
 /**
  * Sends Telegram init data to the backend for signature validation.
+ * Uses cached hash to avoid SPA routing issues that can clear the hash.
  */
 export async function validateInitData(
   endpoint = '/api/auth/validate',
@@ -16,11 +17,13 @@ export async function validateInitData(
     return { valid: false, error: 'client-only' };
   }
 
-  const { tgWebAppData } = retrieveLaunchParams();
-  const fromHash = new URLSearchParams(window.location.hash.slice(1)).get(
-    'tgWebAppData',
-  );
-  const initDataRaw = fromHash || tgWebAppData;
+  // Use cached hash (captured early before SPA routing modifies it)
+  const cachedHash = getInitialHash();
+  const hashParams = new URLSearchParams(cachedHash);
+  const initDataRaw = hashParams.get('tgWebAppData');
+
+  console.log('[Auth Debug] Cached hash length:', cachedHash.length);
+  console.log('[Auth Debug] Init data present:', !!initDataRaw);
 
   if (!initDataRaw) {
     return { valid: false, error: 'missing-init-data' };
