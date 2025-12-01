@@ -248,8 +248,6 @@ export default function PlayGame() {
     <div 
       ref={containerRef}
       className="game-container"
-      onClick={handleScreenTap}
-      onTouchStart={handleScreenTap}
     >
       {/* Loading overlay */}
       {!gameLoaded && (
@@ -269,6 +267,17 @@ export default function PlayGame() {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; fullscreen"
         allowFullScreen
       />
+
+      {/* Invisible touch overlay - captures taps to show controls without blocking game */}
+      {/* This overlay only appears when controls are hidden, allowing user to tap to bring them back */}
+      {!showControls && gameLoaded && (
+        <div
+          className="absolute inset-0 z-40"
+          onClick={handleScreenTap}
+          onTouchStart={handleScreenTap}
+          style={{ background: 'transparent' }}
+        />
+      )}
 
       {/* Floating controls */}
       <div 

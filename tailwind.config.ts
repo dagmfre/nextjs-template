@@ -6,6 +6,25 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  // Safelist critical classes that use CSS variables or dynamic values
+  safelist: [
+    // Telegram theme colors
+    'bg-tg-bg', 'bg-tg-secondary', 'text-tg-text', 'text-tg-hint', 'text-tg-link',
+    'bg-tg-button', 'text-tg-button-text', 'border-tg-hint',
+    // Gaming colors with opacity variants
+    'bg-gaming-purple', 'bg-gaming-pink', 'bg-gaming-blue', 'bg-gaming-cyan',
+    'text-gaming-purple', 'text-gaming-pink', 'text-gaming-blue', 'text-gaming-cyan',
+    'from-gaming-purple', 'to-gaming-pink', 'via-gaming-pink',
+    // Gaming colors with opacity
+    'bg-gaming-purple/30', 'bg-gaming-purple/40', 'bg-gaming-pink/30',
+    'from-gaming-purple/40', 'via-gaming-pink/30', 'to-gaming-blue/20',
+    // Accent colors
+    'bg-accent', 'text-accent', 'bg-accent-light', 'bg-accent-dark',
+    // Gradients
+    'bg-gradient-gaming', 'bg-gradient-card',
+    // Animations
+    'animate-fade-in', 'animate-slide-up', 'animate-pulse-slow',
+  ],
   theme: {
     extend: {
       colors: {
@@ -23,12 +42,11 @@ const config: Config = {
           light: '#A78BFA',
           dark: '#7C3AED',
         },
-        'gaming': {
-          purple: '#9333EA',
-          pink: '#EC4899',
-          blue: '#3B82F6',
-          cyan: '#06B6D4',
-        },
+        // Flat gaming colors for proper Tailwind class generation
+        'gaming-purple': '#9333EA',
+        'gaming-pink': '#EC4899',
+        'gaming-blue': '#3B82F6',
+        'gaming-cyan': '#06B6D4',
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
