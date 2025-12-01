@@ -11,6 +11,7 @@ import {
 
 /**
  * Initializes the application and configures its dependencies.
+ * Note: Telegram environment mocking is handled in instrumentation-client.ts
  */
 export async function init(options: {
   debug: boolean;
@@ -27,13 +28,6 @@ export async function init(options: {
       eruda.init();
       eruda.position({ x: window.innerWidth - 50, y: 0 });
     });
-
-  // Conditionally mock Telegram environment only in development for macOS.
-  const shouldMock = process.env.NODE_ENV === 'development' && options.mockForMacOS;
-  if (shouldMock) {
-    const { mockTelegramEnv } = await import('@/mockEnv');
-    await mockTelegramEnv();
-  }
 
   // Mount all components used in the project.
   mountBackButton.ifAvailable();

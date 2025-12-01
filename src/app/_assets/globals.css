@@ -2,6 +2,11 @@
    Telegram Mini App - Global Styles
    ======================================== */
 
+/* Tailwind CSS Directives - REQUIRED for Tailwind to work */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* CSS Variables & Theme Integration */
 :root {
   /* Telegram theme colors (fallbacks for development) */

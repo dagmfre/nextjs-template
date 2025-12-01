@@ -132,12 +132,32 @@ export default function PlayGame() {
     };
   }, [showInstructions, gameLoaded, resetControlsTimeout]);
 
-  // Handle screen tap to show controls
-  const handleScreenTap = useCallback(() => {
-    if (!showInstructions) {
+  // Handle screen interaction (tap or mouse move) to show controls
+  const handleScreenInteraction = useCallback(() => {
+    if (!showInstructions && gameLoaded) {
       resetControlsTimeout();
     }
-  }, [showInstructions, resetControlsTimeout]);
+  }, [showInstructions, gameLoaded, resetControlsTimeout]);
+  
+  // Set up global event listeners for mouse/touch to detect user activity
+  useEffect(() => {
+    if (showInstructions || !gameLoaded) return;
+    
+    const handleActivity = () => {
+      handleScreenInteraction();
+    };
+    
+    // Listen for mouse movement and touch events on the entire document
+    document.addEventListener('mousemove', handleActivity);
+    document.addEventListener('touchstart', handleActivity);
+    document.addEventListener('click', handleActivity);
+    
+    return () => {
+      document.removeEventListener('mousemove', handleActivity);
+      document.removeEventListener('touchstart', handleActivity);
+      document.removeEventListener('click', handleActivity);
+    };
+  }, [showInstructions, gameLoaded, handleScreenInteraction]);
 
   // Toggle fullscreen
   const toggleFullscreen = async () => {
@@ -267,17 +287,6 @@ export default function PlayGame() {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; fullscreen"
         allowFullScreen
       />
-
-      {/* Invisible touch overlay - captures taps to show controls without blocking game */}
-      {/* This overlay only appears when controls are hidden, allowing user to tap to bring them back */}
-      {!showControls && gameLoaded && (
-        <div
-          className="absolute inset-0 z-40"
-          onClick={handleScreenTap}
-          onTouchStart={handleScreenTap}
-          style={{ background: 'transparent' }}
-        />
-      )}
 
       {/* Floating controls */}
       <div 
