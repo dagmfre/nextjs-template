@@ -254,7 +254,7 @@ export default function PlayGame() {
           {/* Back link */}
           <button
             onClick={handleBack}
-            className="mt-4 text-tg-hint text-sm hover:text-white transition-colors"
+            className="mt-4 text-sm hover:text-white transition-colors"
           >
             ← Back to Games
           </button>
